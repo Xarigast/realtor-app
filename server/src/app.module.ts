@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
 import { OffersModule } from './offers/offers.module';
+import { AuthModule } from './auth/auth.module';
 
 import { Offer } from './offers/offer.entity';
 
@@ -21,6 +22,7 @@ import { Offer } from './offers/offer.entity';
       entities: [Offer],
     }),
     OffersModule,
+    AuthModule,
   ],
   providers: [],
   controllers: [],
