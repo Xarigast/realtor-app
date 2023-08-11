@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Offer } from './offer.entity';
 
 import { CreateOfferDTO } from './dto/create-offer.dto';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class OffersService {
@@ -29,7 +30,10 @@ export class OffersService {
     return foundOffer;
   }
 
-  async createOffer(createOfferDto: CreateOfferDTO): Promise<Offer> {
+  async createOffer(
+    createOfferDto: CreateOfferDTO,
+    user: User,
+  ): Promise<Offer> {
     const {
       address,
       area,
@@ -50,6 +54,7 @@ export class OffersService {
       price,
       propertyType,
       rooms,
+      user,
     });
 
     await this.offersRepository.save(newOffer);
@@ -57,8 +62,8 @@ export class OffersService {
     return newOffer;
   }
 
-  async deleteOffer(id: string): Promise<void> {
-    const result = await this.offersRepository.delete(id);
+  async deleteOffer(id: string, user: User): Promise<void> {
+    const result = await this.offersRepository.delete({ id, user });
 
     if (result.affected === 0) {
       throw new NotFoundException(`Task with ID "${id}" not found.`);

@@ -1,10 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { OffersService } from './offers.service';
 
 import { Offer } from './offer.entity';
+import { User } from 'src/auth/user.entity';
 
 import { CreateOfferDTO } from './dto/create-offer.dto';
+
+import { GetUser } from 'src/auth/decorators/get-user.decorator';
 
 @Controller('offers')
 export class OffersController {
@@ -21,12 +33,17 @@ export class OffersController {
   }
 
   @Post()
-  createOffer(@Body() createOfferDto: CreateOfferDTO): Promise<Offer> {
-    return this.offersService.createOffer(createOfferDto);
+  @UseGuards(AuthGuard())
+  createOffer(
+    @Body() createOfferDto: CreateOfferDTO,
+    @GetUser() user: User,
+  ): Promise<Offer> {
+    return this.offersService.createOffer(createOfferDto, user);
   }
 
   @Delete('/:id')
-  deleteOffer(@Param() id: string): Promise<void> {
-    return this.offersService.deleteOffer(id);
+  @UseGuards(AuthGuard())
+  deleteOffer(@Param('id') id: string, @GetUser() user: User): Promise<void> {
+    return this.offersService.deleteOffer(id, user);
   }
 }
