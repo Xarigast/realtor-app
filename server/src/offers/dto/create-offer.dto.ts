@@ -1,7 +1,8 @@
-import { IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 
 export class CreateOfferDTO {
   @IsNotEmpty()
+  @IsString()
   address: string;
 
   @IsNotEmpty()
@@ -9,8 +10,10 @@ export class CreateOfferDTO {
   area: number;
 
   @IsNotEmpty()
+  @IsString()
   description: string;
 
+  @IsString()
   features: string;
 
   @IsNotEmpty()
@@ -19,6 +22,7 @@ export class CreateOfferDTO {
   photos: number;
 
   @IsNotEmpty()
+  @IsString()
   propertyType: string;
 
   @IsNotEmpty()
