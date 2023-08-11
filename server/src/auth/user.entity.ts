@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Offer } from 'src/offers/offer.entity';
 
 @Entity()
 export class User {
@@ -10,4 +12,7 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Offer, (offer) => offer.user, { eager: true })
+  offers: Offer[];
 }
